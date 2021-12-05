@@ -1,11 +1,13 @@
 // ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, prefer_const_literals_to_create_immutables, use_function_type_syntax_for_parameters
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sportal_web_panel/main.dart';
 import 'package:sportal_web_panel/pages/authentication/reset.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth_web/firebase_auth_web.dart';
+import 'package:sportal_web_panel/pages/home/home.dart';
 
 class AuthenticationPage extends StatelessWidget {
   String password = "";
@@ -86,7 +88,9 @@ class AuthenticationPage extends StatelessWidget {
                 ],
               ),
               InkWell(
-                onTap: () {},
+                onTap: () {
+                  signIn(context, mail, password);
+                },
                 child: Container(
                     decoration: BoxDecoration(
                         color: textBoxColor,
@@ -101,5 +105,26 @@ class AuthenticationPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  signIn(context, email, password) {
+    FirebaseAuth.instance
+        .signInWithEmailAndPassword(email: email, password: password)
+        .then((user) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage()),
+      );
+    }).catchError((e) {
+      showDialog(
+        context: context,
+        builder: (_) => CupertinoAlertDialog(
+          title: Text("Wrong mail or Password!"),
+          content: Text("Try Again!"),
+          actions: [CupertinoDialogAction(child: Text("OK!"))],
+        ),
+        barrierDismissible: true,
+      );
+    });
   }
 }
