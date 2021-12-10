@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sportal_web_panel/main.dart';
+import 'package:sportal_web_panel/pages/authentication/register.dart';
 import 'package:sportal_web_panel/pages/authentication/reset.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth_web/firebase_auth_web.dart';
@@ -84,7 +85,15 @@ class AuthenticationPage extends StatelessWidget {
                           child: Text("Forget Password")),
                     ],
                   ),
-                  TextButton(onPressed: () {}, child: Text("Register"))
+                  TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => RegisterPage()),
+                        );
+                      },
+                      child: Text("Register"))
                 ],
               ),
               InkWell(
@@ -118,10 +127,16 @@ class AuthenticationPage extends StatelessWidget {
     }).catchError((e) {
       showDialog(
         context: context,
-        builder: (_) => CupertinoAlertDialog(
-          title: Text("Wrong mail or Password!"),
-          content: Text("Try Again!"),
-          actions: [CupertinoDialogAction(child: Text("OK!"))],
+        builder: (_) => SimpleDialog(
+          title: Text('Wrong password or mail!'),
+          children: [
+            SimpleDialogOption(
+              onPressed: () {
+                Navigator.pop(context, "Ok");
+              },
+              child: const Text('Ok'),
+            ),
+          ],
         ),
         barrierDismissible: true,
       );
