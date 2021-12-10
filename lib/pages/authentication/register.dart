@@ -5,6 +5,8 @@ import 'package:sportal_web_panel/main.dart';
 import 'package:sportal_web_panel/pages/authentication/profile.dart';
 
 class RegisterPage extends StatefulWidget {
+  const RegisterPage({Key? key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     return _RegisterPageState();
@@ -240,9 +242,9 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               InkWell(
                 onTap: () {
-                  /*if (!controlFields()) {
+                  if (!controlFields()) {
                     errorDialog(context, "Lütfen Bilgileri Eksiksiz Girin!");
-                  }*/
+                  }
                   signUp(context, mail, password);
                   Navigator.push(
                     context,
@@ -254,7 +256,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         color: textBoxColor,
                         borderRadius: BorderRadius.circular(20)),
                     alignment: Alignment.center,
-                    width: 100,
+                    width: 200,
                     padding: EdgeInsets.symmetric(vertical: 16),
                     child: Text("KAYIT OL")),
               ),
