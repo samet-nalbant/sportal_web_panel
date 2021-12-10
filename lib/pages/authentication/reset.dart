@@ -3,8 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:sportal_web_panel/main.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class ResetPassword extends StatelessWidget {
+  final firebase_auth = FirebaseAuth.instance;
   String mail = "";
   String password = "";
   @override
@@ -42,21 +44,16 @@ class ResetPassword extends StatelessWidget {
               SizedBox(
                 height: 30,
               ),
-              TextField(
-                decoration: InputDecoration(
-                    labelText: "Password",
-                    hintText: "123",
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20))),
-                onChanged: (text) {
-                  mail = text;
-                },
-              ),
               SizedBox(
                 height: 30,
               ),
               InkWell(
-                onTap: () {},
+                onTap: () {
+                  @override
+                  Future<void> resetPassword(String email) async {
+                    await firebase_auth.sendPasswordResetEmail(email: email);
+                  }
+                },
                 child: Container(
                     decoration: BoxDecoration(
                         color: textBoxColor,
