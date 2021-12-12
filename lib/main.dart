@@ -3,11 +3,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sportal_web_panel/fieldowner.dart';
 import 'package:sportal_web_panel/pages/authentication/authentication.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 const color = const Color(0xff4a3564);
 const textBoxColor = const Color(0xffe269fc);
+FieldOwner? owner;
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(App());
@@ -29,14 +31,12 @@ class _AppState extends State<App> {
   /// directly inside [build].
   final Future<FirebaseApp> _initialization = Firebase.initializeApp(
       options: FirebaseOptions(
-    apiKey: "AIzaSyA92-Rfwm3txHTNbUKVxIKam_ahEp-4RFg",
-    authDomain: "sportal-881de.firebaseapp.com",
-    projectId: "sportal-881de",
-    storageBucket: "sportal-881de.appspot.com",
-    messagingSenderId: "844614521147",
-    appId: "1:844614521147:web:a0ae93dad96f401770e71e",
-    measurementId: "G-6EZ9L4105R",
-  ));
+          apiKey: "AIzaSyACXc20N5nmoRO_aqGltfULVNOw6zd-Z-Q",
+          authDomain: "sportalauth.firebaseapp.com",
+          projectId: "sportalauth",
+          storageBucket: "sportalauth.appspot.com",
+          messagingSenderId: "571354268192",
+          appId: "1:571354268192:web:757d99e64c5e8de0373245"));
 
   @override
   Widget build(BuildContext context) {

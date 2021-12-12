@@ -1,11 +1,13 @@
 import 'dart:html';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:sportal_web_panel/main.dart';
 import 'package:sportal_web_panel/pages/home/home.dart';
 import 'package:firebase/firebase.dart' as fb;
+import 'package:firebase/firestore.dart' as fs;
 
 class EditProfile extends StatefulWidget {
   const EditProfile({Key? key}) : super(key: key);
@@ -16,7 +18,6 @@ class EditProfile extends StatefulWidget {
 
 class _EditProfileState extends State<EditProfile> {
   String properties = "";
-  List? fromPicker;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,6 +70,8 @@ class _EditProfileState extends State<EditProfile> {
               SizedBox(height: 200),
               InkWell(
                 onTap: () {
+                  owner!.setProperties(properties);
+                  addUser();
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => HomePage()),
@@ -97,19 +100,19 @@ class _EditProfileState extends State<EditProfile> {
     uploadImage(onSelected: (file) {
       fb
           .storage()
-          .refFromURL('gs://sportal-881de.appspot.com/')
+          .refFromURL("gs://sportalauth.appspot.com")
           .child(path)
           .put(file);
     });
   }
 
-  Future<Uri> downloadUrl() {
+  /*Future<Uri> downloadUrl() {
     return fb
         .storage()
-        .refFromURL("gs://sportal-881de.appspot.com/")
+        .refFromURL("gs://sportalauth.appspot.com")
         .child("my pic png")
         .getDownloadURL();
-  }
+  }*/
 
   void uploadImage({required Function(File file) onSelected}) {
     var uploadInput = FileUploadInputElement()..accept = 'image/*';
@@ -123,5 +126,12 @@ class _EditProfileState extends State<EditProfile> {
         onSelected(file);
       });
     });
+  }
+
+  void addUser() {
+    FirebaseFirestore.instance
+        .collection("user")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .set(owner!.toMap());
   }
 }

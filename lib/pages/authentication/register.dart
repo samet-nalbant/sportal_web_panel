@@ -1,12 +1,17 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sportal_web_panel/main.dart';
 import 'package:sportal_web_panel/pages/authentication/profile.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase/firebase.dart' as fb;
+import 'package:firebase/firestore.dart' as fs;
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:sportal_web_panel/fieldowner.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
-
   @override
   State<StatefulWidget> createState() {
     return _RegisterPageState();
@@ -19,6 +24,7 @@ class _RegisterPageState extends State<RegisterPage> {
   String password = "";
   String mail = "";
   String adress = "";
+  FieldOwner? user;
   late UserCredential userCredential;
   List<bool> days = [true, true, true, true, true, true, true];
   @override
@@ -292,11 +298,21 @@ class _RegisterPageState extends State<RegisterPage> {
     return true;
   }
 
+  void initOwner() {
+    owner = FieldOwner(mail, password);
+    owner!.setAdress(adress);
+    owner!.setNum(phoneNumber);
+    owner!.setName(name);
+    for (int i = 0; i < 7; i++) {
+      if (!days[i]) owner!.setDay(i);
+    }
+  }
+
   Future<void> signUp(context, email, password) async {
     try {
       userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
-      // ignore: avoid_print
+      initOwner();
       print(userCredential.user!.email);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
