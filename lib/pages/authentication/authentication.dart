@@ -123,7 +123,7 @@ class AuthenticationPage extends StatelessWidget {
         .then((user) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => HomePage()),
+        MaterialPageRoute(builder: (context) => TappedAppointment()),
       );
     }).catchError((e) {
       showDialog(

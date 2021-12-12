@@ -6,6 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:sportal_web_panel/main.dart';
 import 'package:sportal_web_panel/pages/home/home.dart';
+import 'package:sportal_web_panel/pages/schedule/schedule.dart';
 import 'package:firebase/firebase.dart' as fb;
 import 'package:firebase/firestore.dart' as fs;
 
@@ -74,7 +75,8 @@ class _EditProfileState extends State<EditProfile> {
                   addUser();
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => HomePage()),
+                    MaterialPageRoute(
+                        builder: (context) => TappedAppointment()),
                   );
                 },
                 child: Container(
