@@ -9,6 +9,7 @@ import 'package:sportal_web_panel/pages/authentication/reset.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth_web/firebase_auth_web.dart';
 import 'package:sportal_web_panel/pages/home/home.dart';
+import 'package:sportal_web_panel/pages/schedule/schedule.dart';
 
 class AuthenticationPage extends StatelessWidget {
   String password = "";
