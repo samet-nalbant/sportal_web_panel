@@ -35,6 +35,7 @@ dependencies:
   firebase_storage: ^10.2.3
   flutter:
     sdk: flutter
+  syncfusion_flutter_calendar: ^19.1.57
   get: ^4.5.1
   google_fonts: ^2.1.0
 
