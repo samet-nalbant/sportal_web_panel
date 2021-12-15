@@ -38,6 +38,7 @@ dependencies:
   syncfusion_flutter_calendar: ^19.1.57
   get: ^4.5.1
   google_fonts: ^2.1.0
+  dcdg: ^4.0.0
 
 dev_dependencies:
   flutter_lints: ^1.0.0
