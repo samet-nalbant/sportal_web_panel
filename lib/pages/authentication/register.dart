@@ -250,12 +250,13 @@ class _RegisterPageState extends State<RegisterPage> {
                 onTap: () {
                   if (!controlFields()) {
                     errorDialog(context, "Lütfen Bilgileri Eksiksiz Girin!");
+                  } else {
+                    signUp(context, mail, password);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => EditProfile()),
+                    );
                   }
-                  signUp(context, mail, password);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => EditProfile()),
-                  );
                 },
                 child: Container(
                     decoration: BoxDecoration(
