@@ -88,6 +88,11 @@ class AuthenticationPage extends StatelessWidget {
                   ),
                   TextButton(
                       onPressed: () {
+                        if (sehirler.ilceler.isEmpty) {
+                          sehirler.fillSehirs();
+                          sehirler.fillIlces();
+                          sehirler.fillMahalles();
+                        }
                         Navigator.push(
                           context,
                           MaterialPageRoute(

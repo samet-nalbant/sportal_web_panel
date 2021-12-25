@@ -19,6 +19,7 @@ class EditProfile extends StatefulWidget {
 
 class _EditProfileState extends State<EditProfile> {
   String properties = "";
+  String? fee;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,6 +53,19 @@ class _EditProfileState extends State<EditProfile> {
                   },
                 ),
               ),
+              SizedBox(height: 10),
+              Container(
+                width: 400,
+                child: TextField(
+                  decoration: InputDecoration(
+                      labelText: "Saatlik Saha Ücretini Girin",
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(100))),
+                  onChanged: (text) {
+                    fee = text;
+                  },
+                ),
+              ),
               SizedBox(
                 height: 100,
               ),
@@ -68,10 +82,11 @@ class _EditProfileState extends State<EditProfile> {
                     padding: EdgeInsets.symmetric(vertical: 16),
                     child: Text("Upload Foto")),
               ),
-              SizedBox(height: 200),
+              SizedBox(height: 100),
               InkWell(
                 onTap: () {
                   owner!.setProperties(properties);
+                  owner!.setCost(fee!);
                   addUser();
                   Navigator.push(
                     context,
@@ -108,14 +123,6 @@ class _EditProfileState extends State<EditProfile> {
     });
   }
 
-  /*Future<Uri> downloadUrl() {
-    return fb
-        .storage()
-        .refFromURL("gs://sportalauth.appspot.com")
-        .child("my pic png")
-        .getDownloadURL();
-  }*/
-
   void uploadImage({required Function(File file) onSelected}) {
     var uploadInput = FileUploadInputElement()..accept = 'image/*';
     uploadInput.click();
@@ -132,7 +139,7 @@ class _EditProfileState extends State<EditProfile> {
 
   void addUser() {
     FirebaseFirestore.instance
-        .collection("user")
+        .collection("sahalar")
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .set(owner!.toMap());
   }

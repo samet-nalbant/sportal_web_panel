@@ -1,14 +1,20 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, deprecated_member_use
 
+import 'dart:convert';
+import 'dart:collection';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:sportal_web_panel/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:sportal_web_panel/sehir.dart';
 
 class ResetPassword extends StatelessWidget {
   final firebase_auth = FirebaseAuth.instance;
   String mail = "";
   String password = "";
+  List<dynamic> _illerListesi = [];
+  List<dynamic> _ilceListesi = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(

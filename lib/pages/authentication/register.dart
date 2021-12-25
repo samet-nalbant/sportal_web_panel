@@ -1,14 +1,10 @@
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sportal_web_panel/main.dart';
 import 'package:sportal_web_panel/pages/authentication/profile.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase/firebase.dart' as fb;
-import 'package:firebase/firestore.dart' as fs;
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sportal_web_panel/fieldowner.dart';
+import '../../sehir.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -25,6 +21,10 @@ class _RegisterPageState extends State<RegisterPage> {
   String mail = "";
   String adress = "";
   FieldOwner? user;
+  int? index;
+  Sehir? _selectedSehir;
+  Ilce? _selectedIlce;
+  Mahalle? _selectedMahalle;
   late UserCredential userCredential;
   List<bool> days = [true, true, true, true, true, true, true];
   @override
@@ -121,6 +121,84 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               SizedBox(
                 height: 20,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(
+                      width: 220,
+                      decoration: BoxDecoration(
+                          color: color,
+                          borderRadius: BorderRadius.circular(10)),
+                      child: DropdownButton<Sehir>(
+                        dropdownColor: textBoxColor,
+                        hint: Text("İl seçin"),
+                        value: _selectedSehir,
+                        items: sehirler.namesIl.map((Sehir value) {
+                          return DropdownMenuItem<Sehir>(
+                            value: value,
+                            child: Text(value.sehir_title),
+                          );
+                        }).toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            _selectedIlce = null;
+                            _selectedSehir = value!;
+                            sehirler.getIlces(value.sehir_key);
+                          });
+                        },
+                      )),
+                  SizedBox(
+                    width: 50,
+                  ),
+                  Container(
+                      width: 220,
+                      decoration: BoxDecoration(
+                          color: color,
+                          borderRadius: BorderRadius.circular(10)),
+                      child: DropdownButton<Ilce>(
+                        dropdownColor: textBoxColor,
+                        hint: Text("İlce seçin"),
+                        value: _selectedIlce,
+                        items: sehirler.namesIlce.map((Ilce value) {
+                          return DropdownMenuItem<Ilce>(
+                            value: value,
+                            child: Text(value.ilce_title),
+                          );
+                        }).toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            _selectedMahalle = null;
+                            _selectedIlce = value!;
+                            sehirler.getMahalles(value.ilce_key);
+                          });
+                        },
+                      )),
+                  SizedBox(
+                    width: 50,
+                  ),
+                  Container(
+                      width: 220,
+                      decoration: BoxDecoration(
+                          color: color,
+                          borderRadius: BorderRadius.circular(10)),
+                      child: DropdownButton<Mahalle>(
+                        dropdownColor: textBoxColor,
+                        hint: Text("Mahalle seçin"),
+                        value: _selectedMahalle,
+                        items: sehirler.namesMahalle.map((Mahalle value) {
+                          return DropdownMenuItem<Mahalle>(
+                            value: value,
+                            child: Text(value.mahalle_title),
+                          );
+                        }).toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            _selectedMahalle = value!;
+                          });
+                        },
+                      )),
+                ],
               ),
               TextField(
                 decoration: InputDecoration(
@@ -301,7 +379,8 @@ class _RegisterPageState extends State<RegisterPage> {
 
   void initOwner() {
     owner = FieldOwner(mail, password);
-    owner!.setAdress(adress);
+    owner!.setAdress(_selectedSehir!.sehir_title, _selectedIlce!.ilce_title,
+        _selectedMahalle!.mahalle_title, adress);
     owner!.setNum(phoneNumber);
     owner!.setName(name);
     for (int i = 0; i < 7; i++) {
