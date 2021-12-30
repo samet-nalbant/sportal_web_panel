@@ -2,13 +2,10 @@ import 'dart:html';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:sportal_web_panel/main.dart';
-import 'package:sportal_web_panel/pages/home/home.dart';
 import 'package:sportal_web_panel/pages/schedule/schedule.dart';
 import 'package:firebase/firebase.dart' as fb;
-import 'package:firebase/firestore.dart' as fs;
 
 class EditProfile extends StatefulWidget {
   const EditProfile({Key? key}) : super(key: key);
@@ -20,6 +17,8 @@ class EditProfile extends StatefulWidget {
 class _EditProfileState extends State<EditProfile> {
   String properties = "";
   String? fee;
+  List<DateTime> times = [];
+  List<File> files = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,8 +69,8 @@ class _EditProfileState extends State<EditProfile> {
                 height: 100,
               ),
               InkWell(
-                onTap: () {
-                  uploadStorage();
+                onTap: () async {
+                  await uploadStorage();
                 },
                 child: Container(
                     decoration: BoxDecoration(
@@ -84,15 +83,14 @@ class _EditProfileState extends State<EditProfile> {
               ),
               SizedBox(height: 100),
               InkWell(
-                onTap: () {
+                onTap: () async {
                   owner!.setProperties(properties);
                   owner!.setCost(fee!);
-                  addUser();
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => TappedAppointment()),
-                  );
+                  await addPhoto().then((value) => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => TappedAppointment()),
+                      ));
                 },
                 child: Container(
                     decoration: BoxDecoration(
@@ -110,23 +108,41 @@ class _EditProfileState extends State<EditProfile> {
     );
   }
 
-  void uploadStorage() {
-    final dateTime = DateTime.now();
-    final userID = FirebaseAuth.instance.currentUser!.uid;
-    final path = "$userID/$dateTime";
-    uploadImage(onSelected: (file) {
-      fb
-          .storage()
-          .refFromURL("gs://sportalauth.appspot.com")
-          .child(path)
-          .put(file);
+  Future<void> uploadStorage() async {
+    await uploadImage(onSelected: (file) {
+      files.add(file);
+      times.add(DateTime.now());
     });
   }
 
-  void uploadImage({required Function(File file) onSelected}) {
+  Future<void> addPhoto() async {
+    final userID = FirebaseAuth.instance.currentUser!.uid;
+    int index = 0;
+    for (var item in files) {
+      var temp = times[index];
+      final path = "$userID/$temp";
+      var temp2 = times[0].toString() + "/";
+      await fb
+          .storage()
+          .refFromURL("gs://sportalauth.appspot.com")
+          .child(path)
+          .put(item)
+          .future
+          .then((value) async => owner!
+              .addPhoto(await fb
+                  .storage()
+                  .refFromURL("gs://sportalauth.appspot.com")
+                  .child(FirebaseAuth.instance.currentUser!.uid)
+                  .child(temp2)
+                  .getDownloadURL())
+              .then((value) => addUser()));
+      index++;
+    }
+  }
+
+  Future<void> uploadImage({required Function(File file) onSelected}) async {
     var uploadInput = FileUploadInputElement()..accept = 'image/*';
     uploadInput.click();
-
     uploadInput.onChange.listen((event) {
       final file = uploadInput.files!.first;
       final reader = FileReader();
@@ -137,10 +153,16 @@ class _EditProfileState extends State<EditProfile> {
     });
   }
 
-  void addUser() {
-    FirebaseFirestore.instance
+  Future<void> addUser() async {
+    await FirebaseFirestore.instance
         .collection("sahalar")
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .set(owner!.toMap());
+
+    await FirebaseFirestore.instance.collection("sahalar")
+      ..doc(FirebaseAuth.instance.currentUser!.uid)
+          .collection("Rewieves")
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .set(owner!.toMap2());
   }
 }

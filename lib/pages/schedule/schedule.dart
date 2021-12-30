@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
+import 'package:sportal_web_panel/comment.dart';
 import 'package:sportal_web_panel/pages/authentication/authentication.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:sportal_web_panel/main.dart';
@@ -18,6 +21,12 @@ class CalendarAppointment extends State<TappedAppointment> {
 
   @override
   void initState() {
+    FirebaseFirestore.instance
+        .collection("sahalar")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection("Rewieves")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .set(new Comment("SALAM", "12121", 4, "121312adasdsadsads").toMap());
     _dataSource = _getDataSource();
     super.initState();
   }

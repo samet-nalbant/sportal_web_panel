@@ -1,3 +1,7 @@
+import 'dart:html';
+
+import 'package:sportal_web_panel/comment.dart';
+
 class FieldOwner {
   String? name;
   String? phoneNumber;
@@ -8,11 +12,21 @@ class FieldOwner {
   String? mahalle;
   String? adress;
   String? cost;
+  int favNum = 0;
+  int commentNum = 0;
+  int rate = 0;
   bool type = true;
   List<bool> days = [true, true, true, true, true, true, true];
+  List<Comment> comments = [];
   String? properties;
+  List<String> photos = [];
 
   FieldOwner(this.mail, this.password);
+
+  Future<void> addPhoto(Uri url) async {
+    print("added url\n" + url.toString());
+    photos.add(url.toString());
+  }
 
   void setName(String name) {
     this.name = name;
@@ -41,6 +55,10 @@ class FieldOwner {
     this.cost = cost;
   }
 
+  Map<String, dynamic> toMap2() {
+    return {"comments": comments};
+  }
+
   Map<String, dynamic> toMap() {
     return {
       'name': name,
@@ -53,7 +71,11 @@ class FieldOwner {
       'mahalle': mahalle,
       'type': type,
       'properties': properties,
-      'days': days
+      'days': days,
+      'favNum': favNum,
+      'commenNum': commentNum,
+      'rate': rate,
+      'photos': photos
     };
   }
 }

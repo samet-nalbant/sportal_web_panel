@@ -69,6 +69,9 @@ flutter:
   # example:
   assets:
     - assets/icons/logo.png
+    - assets/adress/ilce.json
+    - assets/adress/sehir.json
+    - assets/adress/mahalle.json
   # fonts:
   #   - family: Schyler
   #     fonts:
