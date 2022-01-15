@@ -16,7 +16,7 @@ class FieldOwner {
   int commentNum = 0;
   int rate = 0;
   bool type = true;
-  List<bool> days = [true, true, true, true, true, true, true];
+  String? start, end;
   List<Comment> comments = [];
   String? properties;
   List<String> photos = [];
@@ -47,12 +47,13 @@ class FieldOwner {
     this.properties = properties;
   }
 
-  void setDay(int day) {
-    days[day] = false;
-  }
-
   void setCost(String cost) {
     this.cost = cost;
+  }
+
+  void setHours(String start, String end) {
+    this.start = start;
+    this.end = end;
   }
 
   Map<String, dynamic> toMap2() {
@@ -71,7 +72,8 @@ class FieldOwner {
       'mahalle': mahalle,
       'type': type,
       'properties': properties,
-      'days': days,
+      'start': start,
+      'end': end,
       'favNum': favNum,
       'commenNum': commentNum,
       'rate': rate,
