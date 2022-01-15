@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: '>=2.12.0 <3.0.0'
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -27,23 +27,25 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  cloud_firestore: ^3.1.4
-  cupertino_icons: ^1.0.2
+  cloud_firestore: ^3.1.5
+  cupertino_icons: ^1.0.4
+  dcdg: ^4.0.0
   firebase: ^9.0.2
-  firebase_auth: ^3.3.0
-  firebase_core: ^1.10.2
-  firebase_storage: ^10.2.3
+  firebase_auth: ^3.3.4
+  firebase_core: ^1.10.6
+  firebase_storage: ^10.2.4
   flutter:
     sdk: flutter
-  syncfusion_flutter_calendar: ^19.1.57
-  get: ^4.5.1
-  google_fonts: ^2.1.0
-  dcdg: ^4.0.0
+  get: ^4.6.1
+  google_fonts: ^2.2.0
+  syncfusion_flutter_calendar: ^19.4.40
 
 dev_dependencies:
-  flutter_lints: ^1.0.0
+  flutter_lints: ^1.0.4
+  image_whisperer: ^0.11.1
   flutter_test:
     sdk: flutter
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
