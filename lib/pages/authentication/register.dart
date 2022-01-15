@@ -20,11 +20,40 @@ class _RegisterPageState extends State<RegisterPage> {
   String password = "";
   String mail = "";
   String adress = "";
+  List<String> start_hours = [
+    "00:00",
+    "01:00",
+    "02:00",
+    "03:00",
+    "04:00",
+    "05:00",
+    "06:00",
+    "07:00",
+    "08:00",
+    "09:00",
+    "10:00",
+    "11:00",
+    "12:00",
+    "13:00",
+    "14:00",
+    "15:00",
+    "16:00",
+    "17:00",
+    "18:00",
+    "19:00",
+    "20:00",
+    "21:00",
+    "22:00",
+    "23:00",
+    "24:00"
+  ];
+  int? start_index, end_index;
   FieldOwner? user;
   int? index;
   Sehir? _selectedSehir;
   Ilce? _selectedIlce;
   Mahalle? _selectedMahalle;
+  String? selected1, selected2;
   late UserCredential userCredential;
   List<bool> days = [true, true, true, true, true, true, true];
   @override
@@ -213,112 +242,76 @@ class _RegisterPageState extends State<RegisterPage> {
                 height: 20,
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   SizedBox(
                     width: 20,
                   ),
                   Container(
-                    width: 120,
-                    child: CheckboxListTile(
-                        shape: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20)),
-                        title: Text("Pzt"),
-                        controlAffinity: ListTileControlAffinity.platform,
-                        activeColor: textBoxColor,
-                        checkColor: Colors.white,
-                        value: days[0],
-                        onChanged: (value) => setState(() => days[0] = value!)),
-                  ),
+                      width: 220,
+                      decoration: BoxDecoration(
+                          color: color,
+                          borderRadius: BorderRadius.circular(10)),
+                      child: DropdownButton<String>(
+                        dropdownColor: textBoxColor,
+                        hint: Text("Başlangıç saatini seçin"),
+                        value: selected1,
+                        items: start_hours.map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            start_index = start_hours.indexOf(value!);
+                            if (end_index != null) {
+                              if (end_index! < start_index!) {
+                                errorDialog(context,
+                                    "Lütfen saat aralığını doğru seçin!");
+                              } else {
+                                selected1 = value;
+                              }
+                            } else {
+                              selected1 = value;
+                            }
+                          });
+                        },
+                      )),
                   SizedBox(
                     width: 20,
                   ),
                   Container(
-                    width: 120,
-                    child: CheckboxListTile(
-                        shape: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20)),
-                        title: Text("Sal"),
-                        controlAffinity: ListTileControlAffinity.platform,
-                        activeColor: textBoxColor,
-                        checkColor: Colors.white,
-                        value: days[1],
-                        onChanged: (value) => setState(() => days[1] = value!)),
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Container(
-                    width: 120,
-                    child: CheckboxListTile(
-                        shape: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20)),
-                        title: Text("Çar"),
-                        controlAffinity: ListTileControlAffinity.platform,
-                        activeColor: textBoxColor,
-                        checkColor: Colors.white,
-                        value: days[2],
-                        onChanged: (value) => setState(() => days[2] = value!)),
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Container(
-                    width: 120,
-                    child: CheckboxListTile(
-                        shape: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20)),
-                        title: Text("Per"),
-                        controlAffinity: ListTileControlAffinity.platform,
-                        activeColor: textBoxColor,
-                        checkColor: Colors.white,
-                        value: days[3],
-                        onChanged: (value) => setState(() => days[3] = value!)),
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Container(
-                    width: 120,
-                    child: CheckboxListTile(
-                        shape: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20)),
-                        title: Text("Cum"),
-                        controlAffinity: ListTileControlAffinity.platform,
-                        activeColor: textBoxColor,
-                        checkColor: Colors.white,
-                        value: days[4],
-                        onChanged: (value) => setState(() => days[4] = value!)),
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Container(
-                    width: 120,
-                    child: CheckboxListTile(
-                        shape: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20)),
-                        title: Text("Cmt"),
-                        controlAffinity: ListTileControlAffinity.platform,
-                        activeColor: textBoxColor,
-                        checkColor: Colors.white,
-                        value: days[5],
-                        onChanged: (value) => setState(() => days[5] = value!)),
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Container(
-                    width: 120,
-                    child: CheckboxListTile(
-                        shape: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20)),
-                        title: Text("Paz"),
-                        controlAffinity: ListTileControlAffinity.platform,
-                        activeColor: textBoxColor,
-                        checkColor: Colors.white,
-                        value: days[6],
-                        onChanged: (value) => setState(() => days[6] = value!)),
-                  )
+                      width: 220,
+                      decoration: BoxDecoration(
+                          color: color,
+                          borderRadius: BorderRadius.circular(10)),
+                      child: DropdownButton<String>(
+                        dropdownColor: textBoxColor,
+                        hint: Text("Bitiş saatini seçin"),
+                        value: selected2,
+                        items: start_hours.map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            end_index = start_hours.indexOf(value!);
+                            if (start_index != null) {
+                              if (end_index! < start_index!) {
+                                errorDialog(context,
+                                    "Lütfen saat aralığını doğru seçin!");
+                              } else {
+                                selected2 = value;
+                              }
+                            } else {
+                              selected2 = value;
+                            }
+                          });
+                        },
+                      )),
                 ],
               ),
               SizedBox(
@@ -383,9 +376,7 @@ class _RegisterPageState extends State<RegisterPage> {
         _selectedMahalle!.mahalle_title, adress);
     owner!.setNum(phoneNumber);
     owner!.setName(name);
-    for (int i = 0; i < 7; i++) {
-      if (!days[i]) owner!.setDay(i);
-    }
+    owner!.setHours(selected1!, selected2!);
   }
 
   Future<void> signUp(context, email, password) async {

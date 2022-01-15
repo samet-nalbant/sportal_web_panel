@@ -1,11 +1,11 @@
 import 'dart:html';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sportal_web_panel/main.dart';
 import 'package:sportal_web_panel/pages/schedule/schedule.dart';
 import 'package:firebase/firebase.dart' as fb;
+import 'package:image_whisperer/image_whisperer.dart';
 
 class EditProfile extends StatefulWidget {
   const EditProfile({Key? key}) : super(key: key);
@@ -66,8 +66,47 @@ class _EditProfileState extends State<EditProfile> {
                 ),
               ),
               SizedBox(
-                height: 100,
+                height: 20,
               ),
+              Container(
+                height: 100,
+                width: 700,
+                alignment: Alignment.center,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: files.length,
+                          itemBuilder: (BuildContext ctxt, int Index) {
+                            return Stack(
+                              children: <Widget>[
+                                Image.network(
+                                  BlobImage(files[Index]).url!,
+                                  width: 100,
+                                  height: 100,
+                                ),
+                                Positioned(
+                                  top: 0,
+                                  right: 0,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      files.remove(files[Index]);
+                                      setState(() {});
+                                    },
+                                    child: const Icon(
+                                      Icons.delete_sharp,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          }),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 100),
               InkWell(
                 onTap: () async {
                   await uploadStorage();
@@ -78,10 +117,11 @@ class _EditProfileState extends State<EditProfile> {
                         borderRadius: BorderRadius.circular(20)),
                     alignment: Alignment.center,
                     width: 300,
+                    height: 50,
                     padding: EdgeInsets.symmetric(vertical: 16),
                     child: Text("Upload Foto")),
               ),
-              SizedBox(height: 100),
+              SizedBox(height: 20),
               InkWell(
                 onTap: () async {
                   owner!.setProperties(properties);
@@ -98,6 +138,7 @@ class _EditProfileState extends State<EditProfile> {
                         borderRadius: BorderRadius.circular(20)),
                     alignment: Alignment.center,
                     width: 300,
+                    height: 50,
                     padding: EdgeInsets.symmetric(vertical: 16),
                     child: Text("Profili tamamla")),
               ),
@@ -113,6 +154,7 @@ class _EditProfileState extends State<EditProfile> {
       files.add(file);
       times.add(DateTime.now());
     });
+    setState(() {});
   }
 
   Future<void> addPhoto() async {
