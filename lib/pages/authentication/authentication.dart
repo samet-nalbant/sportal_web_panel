@@ -57,6 +57,8 @@ class AuthenticationPage extends StatelessWidget {
               ),
               TextField(
                 obscureText: true,
+                enableSuggestions: false,
+                autocorrect: false,
                 decoration: InputDecoration(
                     labelText: "Password",
                     hintText: "123",
@@ -89,15 +91,23 @@ class AuthenticationPage extends StatelessWidget {
                   TextButton(
                       onPressed: () {
                         if (sehirler.ilceler.isEmpty) {
-                          sehirler.fillSehirs();
-                          sehirler.fillIlces();
-                          sehirler.fillMahalles();
+                          sehirler.fillSehirs().then((value) => sehirler
+                              .fillIlces()
+                              .then((value) => sehirler
+                                  .fillMahalles()
+                                  .then((value) => Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                RegisterPage()),
+                                      ))));
+                        } else {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => RegisterPage()),
+                          );
                         }
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => RegisterPage()),
-                        );
                       },
                       child: Text("Register"))
                 ],

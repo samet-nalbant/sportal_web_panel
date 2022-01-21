@@ -9,7 +9,7 @@ class AddAppointmentDialog extends StatefulWidget {
 }
 
 class AddAppointmentDialogState extends State<AddAppointmentDialog> {
-  var maskFormatter = new MaskTextInputFormatter(
+  var maskFormatter = MaskTextInputFormatter(
       mask: '+## (###) ###-##-##', filter: {"#": RegExp(r'[0-9]')});
   TextEditingController nameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();

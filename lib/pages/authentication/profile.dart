@@ -109,7 +109,9 @@ class _EditProfileState extends State<EditProfile> {
               SizedBox(height: 100),
               InkWell(
                 onTap: () async {
-                  await uploadStorage();
+                  setState(() {});
+                  await uploadStorage().then((value) => setState(() {}));
+                  setState(() {});
                 },
                 child: Container(
                     decoration: BoxDecoration(
@@ -153,7 +155,7 @@ class _EditProfileState extends State<EditProfile> {
     await uploadImage(onSelected: (file) {
       files.add(file);
       times.add(DateTime.now());
-    });
+    }).then((value) => setState(() {}));
     setState(() {});
   }
 
@@ -177,7 +179,8 @@ class _EditProfileState extends State<EditProfile> {
                   .child(FirebaseAuth.instance.currentUser!.uid)
                   .child(temp2)
                   .getDownloadURL())
-              .then((value) => addUser()));
+              .then((value) => addUser()))
+          .then((value) => setState(() {}));
       index++;
     }
   }
@@ -193,6 +196,7 @@ class _EditProfileState extends State<EditProfile> {
         onSelected(file);
       });
     });
+    setState(() {});
   }
 
   Future<void> addUser() async {

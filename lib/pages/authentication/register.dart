@@ -58,6 +58,7 @@ class _RegisterPageState extends State<RegisterPage> {
   List<bool> days = [true, true, true, true, true, true, true];
   @override
   Widget build(BuildContext context) {
+    setState(() {});
     return Scaffold(
       body: Center(
         child: Container(
@@ -136,6 +137,9 @@ class _RegisterPageState extends State<RegisterPage> {
                   Container(
                     width: 400,
                     child: TextField(
+                      obscureText: true,
+                      enableSuggestions: false,
+                      autocorrect: false,
                       decoration: InputDecoration(
                           labelText: "Şifre",
                           hintText: "123456",
